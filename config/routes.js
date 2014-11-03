@@ -38,9 +38,10 @@ module.exports.routes = {
   '/callback': {
     view: 'callback'
   },
-  '/newgame': {
-    view: 'newgame'
-  }
+  // '/newgame': {
+  //   view: 'newgame'
+  // }
+  '/games': 'GameController.index'
 
   /***************************************************************************
   *                                                                          *

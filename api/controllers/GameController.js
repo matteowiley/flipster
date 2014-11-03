@@ -6,16 +6,21 @@
  */
 
 module.exports = {
-	'new': function(req, res) {
-		var gameId = GameService.createGame(req.params.game);
-		res.send({
-			gameId: gameId,
-			success: true,
-			gameData: GameService.getGame(gameId)
+	// 'new': function(req, res) {
+	// 	var gameId = GameService.createGame(req.params.game);
+	// 	res.send({
+	// 		gameId: gameId,
+	// 		success: true,
+	// 		gameData: GameService.getGame(gameId)
+	// 	});
+	// },
+	'index': function(req, res) {
+		var allGames = GameService.getGames();
+		console.log('allGames:', allGames);
+		res.view('games', {
+			userId: req.session.user.id,
+			games: allGames
 		});
-	},
-	'gameList': function(req, res) {
-		
 	}
 };
 
