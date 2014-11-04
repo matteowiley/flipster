@@ -5,7 +5,10 @@ var games = {};
 module.exports = {
     sanatizeData: function(userData) {
     	var newData = {};
-    	newData[userData.id] = userData.username;
+    	newData = {
+    		'name': userData.username,
+    		'id': userData.id
+    	} 
     	return newData;
     },
     randomPhotos: function(photoData){
@@ -15,8 +18,9 @@ module.exports = {
 		  var j = Math.floor(Math.random() * photoData.length);
 		  // console.log(j);
 		  // console.log(photoData[j]);
-		  photos[photoData[j].id] = {
-		  	'photoUrl': photoData[j].images.standard_resolution.url
+		  photos = {
+		  	'photoUrl': photoData[j].images.standard_resolution.url,
+		  	'photoId': photoData[j].id
 		}
 		  photoData.pop(j);
 		}

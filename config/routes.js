@@ -41,7 +41,8 @@ module.exports.routes = {
   // '/newgame': {
   //   view: 'newgame'
   // }
-  '/games': 'GameController.index'
+  '/games': 'GameController.index',
+  '/games/:id': 'GameController.show'
 
   /***************************************************************************
   *                                                                          *

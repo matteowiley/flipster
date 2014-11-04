@@ -14,7 +14,7 @@ module.exports = {
 		res.redirect('/signin/init?access_token=' + accessToken);
 	},
 	init: function (req, res) {
-		console.log(req.session);
+		// console.log(req.session);
 		/** 
 		*  Check for  authoraztio code in the URL
 		*  If it exists start the game
@@ -33,7 +33,6 @@ module.exports = {
 						accessToken: accessToken
 					};
 					photos = InstagramService.randomPhotos(imageBody.data);
-					console.log(owner, photos);
 					// do imageBody stuff here
 					var gameId = GameService.createGame({
 						photos: photos,

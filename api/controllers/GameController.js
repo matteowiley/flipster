@@ -21,6 +21,14 @@ module.exports = {
 			userId: req.session.user.id,
 			games: allGames
 		});
+	},
+	'show': function(req, res) {
+		var gameId = req.param('id');
+		var game = GameService.getGame(gameId);
+		res.view('game', {
+			userId: req.session.user.id,
+			game: game
+		});
 	}
 };
 
