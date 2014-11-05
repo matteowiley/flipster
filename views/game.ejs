@@ -1,3 +1,7 @@
-<% for (var i in game) { %>
-<%= game[i] %>
+<ul class="gameboard">
+<% for (var i in game.photos) { %>
+	<li>
+		<img src="<%= game.photos[i].photoUrl %>" value="<%= game.photos[i].photoId %>">
+	</li>
 <% } %>
+</ul>

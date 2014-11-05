@@ -1,0 +1,12 @@
+.gameboard {
+	width: 428px;
+}
+.gameboard img {
+	width: 100%;
+}
+.gameboard li {
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	margin: 2px;
+}

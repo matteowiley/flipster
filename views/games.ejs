@@ -1,3 +1,22 @@
-<% for (var i in games) { %>
-<a href="/games/<%= games[i]['id'] %>" class="button">Play with <%= games[i]['owner']['name'] %> </a>
-<% } %>
+<div class="game-list">
+	<% for (var i in games) { %>
+	<a href="/games/<%= games[i]['id'] %>/join" class="button">Play with <%= games[i].players[0].username %> </a>
+	<% } %>
+</div>
+
+
+<a href="/games/create" class="button">Start new game!</a>
+<script>
+var gameListingTemplate = [
+	'<a href="/games/{{= id }}/join" class="button">',
+		'Play with {{= players[0].username }}',
+	'</a>'
+].join('');
+io.socket.on('games/newGame', function(game) {
+	var template = _.template(gameListingTemplate);
+	var compiled = template(game);
+	$('.game-list').append(compiled);
+});
+// var gamesRoom = io.socket.join('games');
+// console.log(gamesRoom);
+</script>

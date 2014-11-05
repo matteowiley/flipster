@@ -29,9 +29,23 @@
     -->
 
     <!--STYLES-->
+    <link rel="stylesheet" href="/styles/clearfix.css">
+    <link rel="stylesheet" href="/styles/game.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    
+    <!--SCRIPTS-->
+    <script src="/js/dependencies/underscore.js"></script>
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script>
+    _.templateSettings = {
+      evaluate:    /\{\{(.+?)\}\}/g,
+      interpolate: /\{\{=(.+?)\}\}/g,
+      escape:      /\{\{-(.+?)\}\}/g
+    };
+    </script>
+    <!--SCRIPTS END-->
   </head>
 
   <body>
@@ -88,8 +102,5 @@
 
     -->
 
-    <!--SCRIPTS-->
-    <script src="/js/dependencies/sails.io.js"></script>
-    <!--SCRIPTS END-->
   </body>
 </html>

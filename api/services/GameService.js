@@ -3,11 +3,24 @@ var games = {};
 
 
 module.exports = {
-    createGame: function(gameData) {
+    socketAnnounceGame: function(gameId) {
+        sails.sockets.blast('games/newGame', this.getGame(gameId));
+    },
+    createGame: function() {
         // console.log(gameData);
-        gameData.id = gameCount++;
-        games[gameData.id] = gameData;
-        return gameData.id;
+        var game = {};
+        game.id = gameCount++;
+        game.players = [];
+        game.photos = [];
+        games[game.id] = game;
+        return game.id;
+    },
+    addPlayer: function(gameId, user, photoArray) {
+        var game = this.getGame(gameId);
+        if (game.players.length < 2) {
+            game.players.push(user);
+            game.photos = game.photos.concat(photoArray);
+        }
     },
     getGame: function(gameId) {
         return games[gameId];

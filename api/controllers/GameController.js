@@ -15,8 +15,9 @@ module.exports = {
 	// 	});
 	// },
 	'index': function(req, res) {
+		// console.log(sails.sockets);
 		var allGames = GameService.getGames();
-		console.log('allGames:', allGames);
+		// console.log('allGames:', allGames);
 		res.view('games', {
 			userId: req.session.user.id,
 			games: allGames
@@ -29,6 +30,33 @@ module.exports = {
 			userId: req.session.user.id,
 			game: game
 		});
+	},
+	'join': function(req, res) {
+		var gameId = req.param('id');
+		InstagramService.getPhotos(
+			req.session.user.id,
+			req.session.user.accessToken,
+			function(imageBody) {
+				photos = InstagramService.randomPhotos(imageBody.data);
+		       	GameService.addPlayer(gameId, req.session.user, photos);
+				console.log('joined game!');
+				res.redirect('/games/' + gameId);
+			}
+		);
+	},
+	'create': function(req, res) {
+		console.log(req.session.user);
+		InstagramService.getPhotos(
+			req.session.user.id,
+			req.session.user.accessToken,
+			function(imageBody) {
+				photos = InstagramService.randomPhotos(imageBody.data);
+				var gameId = GameService.createGame();
+		       	GameService.addPlayer(gameId, req.session.user, photos);
+		       	GameService.socketAnnounceGame(gameId);
+				console.log('game created!');
+				res.redirect('/games/' + gameId);
+			}
+		);
 	}
 };
-
