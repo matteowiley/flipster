@@ -12,11 +12,10 @@ var gameListingTemplate = [
 		'Play with {{= players[0].username }}',
 	'</a>'
 ].join('');
-io.socket.on('games/newGame', function(game) {
+var socket = io.connect('http://0.0.0.0:1337/');
+socket.on('games/newGame', function(game) {
 	var template = _.template(gameListingTemplate);
 	var compiled = template(game);
 	$('.game-list').append(compiled);
 });
-// var gamesRoom = io.socket.join('games');
-// console.log(gamesRoom);
 </script>

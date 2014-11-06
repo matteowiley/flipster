@@ -38,7 +38,7 @@ module.exports = {
 		  // console.log(photoData[j]);
 		  var photoObject = {
 		  	'photoUrl': photoData[j].images.standard_resolution.url,
-		  	'photoId': photoData[j].id
+		  	'instagramId': photoData[j].id
 			};
 		  photos.push(photoObject);
 		  photos.push(photoObject);

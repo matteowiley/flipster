@@ -15,14 +15,13 @@ module.exports = {
 	// 	});
 	// },
 	'index': function(req, res) {
-		// console.log(sails.sockets);
 		var allGames = GameService.getGames();
-		// console.log('allGames:', allGames);
 		res.view('games', {
 			userId: req.session.user.id,
 			games: allGames
 		});
 	},
+
 	'show': function(req, res) {
 		var gameId = req.param('id');
 		var game = GameService.getGame(gameId);
@@ -30,7 +29,16 @@ module.exports = {
 			userId: req.session.user.id,
 			game: game
 		});
+		// var test = sails.sockets.join(req.socket, 'game/' + gameId + '/flip');
+		// console.log(req.socket);
+		// setTimeout(function() {
+		// 	console.log(req.socket);
+		// }, 3000);
+		// function(id) {
+		// 	console.log('RECEIVED ID: ' + id);
+		// });
 	},
+
 	'join': function(req, res) {
 		var gameId = req.param('id');
 		InstagramService.getPhotos(
@@ -39,11 +47,14 @@ module.exports = {
 			function(imageBody) {
 				photos = InstagramService.randomPhotos(imageBody.data);
 		       	GameService.addPlayer(gameId, req.session.user, photos);
-				console.log('joined game!');
+				GameService.assignTurn(gameId, 0);
+				var game = GameService.getGame(gameId);
+				console.log('playerTurn:', game.playerTurn);
 				res.redirect('/games/' + gameId);
 			}
 		);
 	},
+ 
 	'create': function(req, res) {
 		console.log(req.session.user);
 		InstagramService.getPhotos(

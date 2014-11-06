@@ -1,7 +1,56 @@
+<script>
+function bindClicks($elements) {
+	$elements.each(function(index, element) {
+		$(element).on('click', function(e) {
+			var photoId = $(element).attr('data-id');
+			io.socket.emit(
+				'games/flip',
+				{
+					photoId: photoId,
+					gameId: gameId
+				}
+			);
+		});
+	});
+}
+</script>
+
 <ul class="gameboard">
 <% for (var i in game.photos) { %>
-	<li>
-		<img src="<%= game.photos[i].photoUrl %>" value="<%= game.photos[i].photoId %>">
+	<li data-id="<%= i %>" data-ig-id="<%= game.photos[i].instagramId %>" class="hide">
+		<img src="<%= game.photos[i].photoUrl %>">
 	</li>
 <% } %>
 </ul>
+
+<script>
+bindClicks($('.gameboard li'));
+</script>
+
+<script type="text/template" id="gameGridTemplate">
+<ul class="gameboard">
+{{ for (var i in game.photos) { }}
+	<li data-id="{{= i }}" data-ig-id="{{= game.photos[i].instagramId }}" class="hide">
+		<img src="{{= game.photos[i].photoUrl }}">
+	</li>
+{{ } }}
+</ul>
+</script>
+
+<script>
+var gameId = <%= game.id %>;
+io.socket.on('connect', function() {
+	io.socket.emit('games/playerJoined', gameId);
+});
+io.socket.on('games/' + gameId + '/playerJoined', function(game) {
+	var template = _.template($('#gameGridTemplate').html());
+	var $compiled = $(template({ game: game }));
+	bindClicks($compiled.find('li'));
+	$('.gameboard').replaceWith($compiled);
+});
+
+io.socket.on('games/' + gameId + '/flip', function(photoId) {
+	console.log(photoId);
+	$('[data-id="' + photoId + '"]').addClass('show').removeClass('hide');
+});
+</script>

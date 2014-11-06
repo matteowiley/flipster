@@ -22,9 +22,33 @@ module.exports.sockets = {
   *                                                                          *
   ***************************************************************************/
   onConnect: function(session, socket) {
+    socket.on('games/flip', function(flipData) {
+      sails.sockets.blast('games/' + flipData.gameId + '/flip', flipData.photoId);
+      console.log('photoId:', flipData.photoId)
+      console.log('gameId:', flipData.gameId)
+      console.log('hey! hey!');
+    });
 
-    // By default, do nothing.
+    socket.on('games/playerJoined', function(gameId) {
+      var gameData = GameService.getGame(gameId);
+      sails.sockets.blast('games/' + gameId + '/playerJoined', gameData);
+    });
+    
+    // socket.on('game' + gameId + 'playerJoins', function(somedata) {
 
+    // })
+
+    // socket.on('game/match' function(somedata) {
+
+    // })
+
+    // socket.on('game/miss' function(somedata){
+
+    // })
+
+    // socket.on('game/turn' function(somedata){
+
+    // })
   },
 
 
