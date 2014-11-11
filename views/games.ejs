@@ -1,15 +1,29 @@
-<div class="game-list">
-	<% for (var i in games) { %>
-	<a href="/games/<%= games[i]['id'] %>/join" class="button">Play with <%= games[i].players[0].username %> </a>
-	<% } %>
+<header class="homepage">
+
+	<div class="title">Flipster</div>
+
+</header>
+
+<div class="listcontainer">
+
+	<div class="game-list">
+		<% for (var i in games) { %>
+		<a href="/games/<%= games[i]['id'] %>/join" class="button"><%= games[i].players[0].username %> </a>
+		<% } %>
+	</div>
+
+
+	<a href="/games/create" class="button">New game!</a>
+
 </div>
 
+<footer>Created by: Matteo Wiley
+</footer> 
 
-<a href="/games/create" class="button">Start new game!</a>
 <script>
 var gameListingTemplate = [
 	'<a href="/games/{{= id }}/join" class="button">',
-		'Play with {{= players[0].username }}',
+		'{{= players[0].username }}',
 	'</a>'
 ].join('');
 var socket = io.connect('http://0.0.0.0:1337/');
@@ -19,3 +33,4 @@ socket.on('games/newGame', function(game) {
 	$('.game-list').append(compiled);
 });
 </script>
+

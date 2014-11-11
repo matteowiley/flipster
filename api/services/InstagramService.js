@@ -42,8 +42,7 @@ module.exports = {
 			};
 		  photos.push(photoObject);
 		  photos.push(photoObject);
-		  console.log(photoObject);
-		  photoData.slice(j, 1);
+		  photoData.splice(j, 1);
 		}
 		return photos;
     }

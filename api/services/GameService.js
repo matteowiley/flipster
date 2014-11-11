@@ -13,10 +13,10 @@ module.exports = {
         game.id = gameCount++;
         game.players = [];
         game.photos = [];
+        game.flipped = [];
         games[game.id] = game;
         return game.id;
     },
-
     addPlayer: function(gameId, user, photoArray) {
         var game = this.getGame(gameId);
         if (game.players.length < 2) {
@@ -33,29 +33,68 @@ module.exports = {
 
     'assignTurn': function(gameId, playerIndex) {
         var game = this.getGame(gameId);
+        var player = game.players[playerIndex];
         if (!game.playerTurn) {
             game.playerTurn = {
-                'currentPlayer': playerIndex,
+                'player': player,
                 'turns': 0
-            }
-        }; 
+            };
+            sails.sockets.blast('games/' + gameId + '/turn', player.username);
+        } else {
+            game.playerTurn.player = player;
+            game.playerTurn.turns = 0;
+        }
     },
 
     'turnCounter': function(gameId) {
         var game = this.getGame(gameId)
-        if (game.playerTurn.currentPlayer.turns < 2) {
-           game.playerTurn.currentPlayer.turns++;
+        console.log(game.playerTurn);
+        console.log(game.playerTurn.turns);
+        if (game.playerTurn.turns < 1) {
+           game.playerTurn.turns++;
         } else {
-            var playerIndex = game.playerTurn.currentPlayer == 0 ? 1 : 0;
+            var playerIndex = (game.playerTurn.player == game.players[0]) ? 1 : 0;
             this.assignTurn(gameId, playerIndex);
         };
     },
 
-    'comparePhotos': function(gameId, photoIndex1, photoIndex2) {
+    'bothFlipped': function(gameId) {
         var game = this.getGame(gameId);
-        var photo1 = game.photos[photoIndex1];
-        var photo2 = game.photos[photoIndex2];
-        return photo1.instagramId == photo2.instagramId;
+        return game.flipped.length == 2;
+    },
+
+    'flipPhoto': function (gameId, photoId) {
+        var game = this.getGame(gameId);
+        if (game.flipped.length <= 1) {
+            if (game.flipped.length == 0 ||
+                (game.flipped.length == 1 &&
+                game.flipped[0].id != photoId)) {
+                game.flipped.push(photoId);
+            }
+        }
+    },
+
+    'getPhotoByIndex': function(gameId, index) {
+        var game = this.getGame(gameId);
+        return game.photos[index];
+    },
+
+    'compareFlipped': function(gameId) {
+        var game = this.getGame(gameId);
+        var photo1 = game.photos[game.flipped[0]];
+        var photo2 = game.photos[game.flipped[1]];
+        console.log(photo1.instagramId, 'vs', photo2.instagramId);
+        game.flipped = [];
+        var match = photo1.instagramId == photo2.instagramId;
+        if (match) {
+            photo1.match = true;
+            photo2.match = true;
+        }
+
+        return {
+            match: match,
+            photos: [photo1, photo2]
+        };
     },
 
     getGame: function(gameId) {

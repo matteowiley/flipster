@@ -29,14 +29,7 @@ module.exports = {
 			userId: req.session.user.id,
 			game: game
 		});
-		// var test = sails.sockets.join(req.socket, 'game/' + gameId + '/flip');
-		// console.log(req.socket);
-		// setTimeout(function() {
-		// 	console.log(req.socket);
-		// }, 3000);
-		// function(id) {
-		// 	console.log('RECEIVED ID: ' + id);
-		// });
+		
 	},
 
 	'join': function(req, res) {
@@ -49,7 +42,6 @@ module.exports = {
 		       	GameService.addPlayer(gameId, req.session.user, photos);
 				GameService.assignTurn(gameId, 0);
 				var game = GameService.getGame(gameId);
-				console.log('playerTurn:', game.playerTurn);
 				res.redirect('/games/' + gameId);
 			}
 		);
@@ -65,9 +57,9 @@ module.exports = {
 				var gameId = GameService.createGame();
 		       	GameService.addPlayer(gameId, req.session.user, photos);
 		       	GameService.socketAnnounceGame(gameId);
-				console.log('game created!');
 				res.redirect('/games/' + gameId);
 			}
 		);
 	}
+
 };

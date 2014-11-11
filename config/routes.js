@@ -38,13 +38,15 @@ module.exports.routes = {
   '/callback': {
     view: 'callback'
   },
+  
   '/callback/init': 'SignInController.instagramCallback',
-  // '/newgame': {
-  //   view: 'newgame'
-  // }
+
   '/games': 'GameController.index',
+  
   '/games/create' : 'GameController.create',
+  
   '/games/:id': 'GameController.show',
+  
   '/games/:id/join': 'GameController.join'
 
   /***************************************************************************

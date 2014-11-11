@@ -1,8 +1,20 @@
 <script>
+// var board = {
+// 	selected: [],
+// 	select: function (id) {
+// 		board.selected.push(id);
+// 		if (board.selected.length >= 2) {
+// 			// Make request to server
+// 		}
+// 	}
+// }
+var gameId = <%= game.id %>;
+
 function bindClicks($elements) {
 	$elements.each(function(index, element) {
 		$(element).on('click', function(e) {
 			var photoId = $(element).attr('data-id');
+			console.log("clicked id:", photoId)
 			io.socket.emit(
 				'games/flip',
 				{
@@ -14,6 +26,11 @@ function bindClicks($elements) {
 	});
 }
 </script>
+<header class="gameheader">
+
+	<div class="title">Flipster</div>
+
+</header>
 
 <ul class="gameboard">
 <% for (var i in game.photos) { %>
@@ -38,10 +55,10 @@ bindClicks($('.gameboard li'));
 </script>
 
 <script>
-var gameId = <%= game.id %>;
 io.socket.on('connect', function() {
 	io.socket.emit('games/playerJoined', gameId);
 });
+
 io.socket.on('games/' + gameId + '/playerJoined', function(game) {
 	var template = _.template($('#gameGridTemplate').html());
 	var $compiled = $(template({ game: game }));
@@ -50,7 +67,41 @@ io.socket.on('games/' + gameId + '/playerJoined', function(game) {
 });
 
 io.socket.on('games/' + gameId + '/flip', function(photoId) {
-	console.log(photoId);
+	console.log("Flipping:", photoId)
 	$('[data-id="' + photoId + '"]').addClass('show').removeClass('hide');
 });
+
+io.socket.on('games/' + gameId + '/match', function(photos) {
+	var igId = photos[0].instagramId;
+	console.log('Matched:', igId)
+	setTimeout(function() {
+		$('[data-ig-id="' + igId + '"]').addClass('remove').removeClass('show');
+	}, 2000);
+});
+
+io.socket.on('games/' + gameId + '/miss', function(photos) {
+	setTimeout(function() {
+		for (var i = 0; i < photos.length; i++) {
+			var igId = photos[i].instagramId;
+			$('[data-ig-id="' + igId + '"]').addClass('hide').removeClass('show');
+			console.log("Didn't match:", igId)
+		}
+	}, 2000);
+});
+
+io.socket.on('games/' + gameId + '/turn', function(username) {
+	$('#player-footer').text(
+		'It\'s ' + username + '\'s turn.'
+	);
+});
 </script>
+
+<footer id="player-footer">
+	<% if (game.playerTurn) { %>
+		It's <%= game.playerTurn.player.username %>'s turn. 
+	<% } else { %>
+		Waiting for a player to join...
+	<% } %>
+</footer>
+
+

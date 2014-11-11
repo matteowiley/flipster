@@ -6,31 +6,12 @@
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
-    <!--  
-        Stylesheets and Preprocessors
-        ==============================
-
-        You can always bring in CSS files manually with `<link>` tags, or asynchronously
-        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage 
-        of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-        By default, stylesheets from your `assets/styles` folder are included
-        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
-        are supported. In production, your styles will be minified and concatenated into
-        a single file.
-        
-        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-            
-            + Change the order of your CSS files
-            + Import stylesheets from other directories
-            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
-    -->
-
+    <link href='http://fonts.googleapis.com/css?family=Amatic+SC:700' rel='stylesheet' type='text/css'>
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/clearfix.css">
     <link rel="stylesheet" href="/styles/game.css">
+    <link rel="stylesheet" href="/styles/games.css">
+    <link rel="stylesheet" href="/styles/homepage.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -45,10 +26,32 @@
         interpolate: /\{\{=(.+?)\}\}/g,
         escape: /\{\{-(.+?)\}\}/g
     };
+    
+      $(window).resize(function() {
+
+       //ajusting size of section dynamically
+        var screenHeight = 600;
+        if(window.innerHeight && window.innerHeight >= 600) {
+          screenHeight = window.innerHeight;
+        };
+        $('body').css("height",String(screenHeight));
+      });
+
+
+      $(document).ready(function(){ 
+        var screenHeight = 600;
+        if(window.innerHeight && window.innerHeight >= 600){
+          screenHeight = window.innerHeight;
+        };
+        $('body').css("height",String(screenHeight));
+      });
     </script>
   </head>
 
   <body>
+  <header>
+    
+  </header>
     <%- body %>
 
 
