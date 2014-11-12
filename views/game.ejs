@@ -73,7 +73,6 @@ io.socket.on('games/' + gameId + '/flip', function(photoId) {
 
 io.socket.on('games/' + gameId + '/match', function(photos) {
 	var igId = photos[0].instagramId;
-	console.log('Matched:', igId)
 	setTimeout(function() {
 		$('[data-ig-id="' + igId + '"]').addClass('remove').removeClass('show');
 	}, 2000);
@@ -94,6 +93,12 @@ io.socket.on('games/' + gameId + '/turn', function(username) {
 		'It\'s ' + username + '\'s turn.'
 	);
 });
+
+io.socket.on('games/' + gameId + '/end', function() {
+	$('#player-footer').text('Game Over!');
+	$('.gameboard').html('<a href="/games" class="button">Start new game!</a>');
+});
+
 </script>
 
 <footer id="player-footer">

@@ -27,6 +27,7 @@ module.exports.sockets = {
       sails.sockets.blast('games/' + gameId + '/flip', flipData.photoId);
       
       var newTurn = false;
+      var gameOver = false;
       if (GameService.bothFlipped(gameId)) {
         newTurn = true;
         var matchData = GameService.compareFlipped(gameId);
@@ -35,11 +36,19 @@ module.exports.sockets = {
         } else {
           sails.sockets.blast('games/' + gameId + '/miss', matchData.photos);
         }
+        if (GameService.gameOver(gameId)) {
+          sails.sockets.blast('games/' + gameId + '/end');
+          console.log('game over');         
+          GameService.destroyGame(gameId);
+          gameOver = true;
+        }
       }
-
-      GameService.turnCounter(gameId);
-      if (newTurn) {
-        sails.sockets.blast('games/' + gameId + '/turn', gameData.playerTurn.player.username);
+      
+      if (!gameOver) {
+        GameService.turnCounter(gameId);
+        if (newTurn) {
+          sails.sockets.blast('games/' + gameId + '/turn', gameData.playerTurn.player.username);
+        }
       }
     });
 
@@ -61,8 +70,6 @@ module.exports.sockets = {
     });
   },
 
-
- 
   onDisconnect: function(session, socket) {
 
   },

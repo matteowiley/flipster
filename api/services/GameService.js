@@ -23,12 +23,10 @@ module.exports = {
             game.players.push(user);
             game.photos = game.photos.concat(photoArray);
         }
-        for (var i = game.photos.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var temp = game.photos[i];
-          game.photos[i] = game.photos[j];
-          game.photos[j] = temp;
-        };
+        for (var i = 0; i < game.photos.length; i++) {
+            game.photos[i].match = false;
+        }
+        game.photos = _.shuffle(game.photos);
     },
 
     'assignTurn': function(gameId, playerIndex) {
@@ -48,8 +46,7 @@ module.exports = {
 
     'turnCounter': function(gameId) {
         var game = this.getGame(gameId)
-        console.log(game.playerTurn);
-        console.log(game.playerTurn.turns);
+        console.log("finding game:", gameId, game);
         if (game.playerTurn.turns < 1) {
            game.playerTurn.turns++;
         } else {
@@ -107,6 +104,16 @@ module.exports = {
             currentGames.push(games[i])
         }
         return currentGames;
+    },
+    
+    gameOver: function(gameId) {
+        var game = this.getGame(gameId);
+        for (var i = 0; i < game.photos.length; i++) {
+            if (game.photos[i].match == false) {
+                return false;
+            }
+        }
+        return true;
     },
 
     destroyGame: function(gameId) {
