@@ -10,7 +10,7 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.sockets.html
  */
 
-module.exports.sockets = {
+module.exports.sockets = { 
 
   onConnect: function(session, socket) {
     socket.on('games/flip', function(flipData) {
