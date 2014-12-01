@@ -31,11 +31,8 @@ module.exports = {
     },
     randomPhotos: function(photoData){
     	var photos = [];
-    	console.log('length:', photoData.length);
 		for (var i = 3; i > 0; i--) {
 		  var j = Math.floor(Math.random() * photoData.length);
-		  // console.log(j);
-		  // console.log(photoData[j]);
 		  var photoObject = {
 		  	'photoUrl': photoData[j].images.standard_resolution.url,
 		  	'instagramId': photoData[j].id

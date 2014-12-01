@@ -6,14 +6,7 @@
  */
 
 module.exports = {
-	// 'new': function(req, res) {
-	// 	var gameId = GameService.createGame(req.params.game);
-	// 	res.send({
-	// 		gameId: gameId,
-	// 		success: true,
-	// 		gameData: GameService.getGame(gameId)
-	// 	});
-	// },
+	
 	'index': function(req, res) {
 		var allGames = GameService.getGames();
 		res.view('games', {
@@ -48,7 +41,6 @@ module.exports = {
 	},
  
 	'create': function(req, res) {
-		console.log(req.session.user);
 		InstagramService.getPhotos(
 			req.session.user.id,
 			req.session.user.accessToken,

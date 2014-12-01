@@ -18,8 +18,6 @@ module.exports.sockets = {
       var gameData = GameService.getGame(gameId);
       var flipperId = session.user.id;
       if (flipperId !== gameData.playerTurn.player.id) {
-        // throw some error
-
         return;
       }
 
@@ -38,7 +36,6 @@ module.exports.sockets = {
         }
         if (GameService.gameOver(gameId)) {
           sails.sockets.blast('games/' + gameId + '/end');
-          console.log('game over');         
           GameService.destroyGame(gameId);
           gameOver = true;
         }

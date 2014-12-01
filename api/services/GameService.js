@@ -8,7 +8,6 @@ module.exports = {
     },
 
     createGame: function() {
-        // console.log(gameData);
         var game = {};
         game.id = gameCount++;
         game.players = [];
@@ -46,7 +45,6 @@ module.exports = {
 
     'turnCounter': function(gameId) {
         var game = this.getGame(gameId)
-        console.log("finding game:", gameId, game);
         if (game.playerTurn.turns < 1) {
            game.playerTurn.turns++;
         } else {
@@ -80,7 +78,6 @@ module.exports = {
         var game = this.getGame(gameId);
         var photo1 = game.photos[game.flipped[0]];
         var photo2 = game.photos[game.flipped[1]];
-        console.log(photo1.instagramId, 'vs', photo2.instagramId);
         game.flipped = [];
         var match = photo1.instagramId == photo2.instagramId;
         if (match) {
